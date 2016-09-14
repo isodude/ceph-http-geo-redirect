@@ -1,0 +1,10 @@
+version: '2'
+
+services:
+  haproxy:
+    image: haproxy
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+      - ./geoip.lst:/usr/local/etc/haproxy/geoip.lst:ro
+    ports:
+      80:80

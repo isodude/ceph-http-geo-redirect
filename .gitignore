@@ -1,0 +1,7 @@
+GeoLite2*
+*.csv
+*.dta
+*.env
+*.lst
+*.zip
+*.cfg
