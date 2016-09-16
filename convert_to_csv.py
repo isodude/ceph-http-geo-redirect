@@ -41,5 +41,8 @@ networks.rename(columns={'country_iso_code':'iso2'}, inplace=True)
 networks.iso2 = networks.iso2.fillna(value=networks.continent_code)
 networks.drop('continent_code',axis=1, inplace=True)
 networks = networks.merge(geo.loc[:,['iso2','iso3']])
-networks = networks.merge(backend_selection)
-networks.loc[:,['network','backend']].to_csv('geoip.csv')
+networks = networks.merge(backend_selection).loc[:,['network','backend']]
+f = open('geoip.lst', 'w')
+for index, rows in networks.iterrows():
+  f.write('{} {:2}\n'.format(rows['network'], rows['backend']))
+f.close()
