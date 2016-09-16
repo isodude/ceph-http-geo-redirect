@@ -28,8 +28,6 @@ mirrors_iso3 = geo.query('iso2 == @mirrors').drop_duplicates().to_dict(orient='l
 indexes = [] 
 for origin in dist.iso_o.unique():
  indexes.append(dist.query('(iso_o == @origin) and (iso_d == @mirrors_iso3)').sort_values(by='dist').index[0])
-  #backend_mappings.append(b)
-#print backend_mappings
 
 backend_selection = dist.loc[indexes].loc[:,['iso_o','iso_d']]
 backend_selection.rename(columns={'iso_o':'iso3', 'iso_d':'backend_iso3'}, inplace=True)
