@@ -12,15 +12,6 @@ loc.set_index('geoname_id')
 geo.set_index(['iso2','iso3'])
 dist.set_index(['iso_o','iso_d'])
 
-def iso2_to_iso3(iso2):
- return geo.query('iso2 == @iso2').iloc[0]['iso3']
-
-def iso3_to_iso2(iso3):
- return geo.query('iso3 == @iso3').iloc[0]['iso2']
-
-def geoname_id_to_iso2(geoname_id):
- return loc.query('loc.geoname_id == @geoname_id').iloc[0]['country_iso_code']
-
 mirrors = [x.upper() for x in ("de","se","cz","au","hk","fr","us")]
 # http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.drop_duplicates.html
 mirrors_iso3 = geo.query('iso2 == @mirrors').drop_duplicates().to_dict(orient='list')['iso3']
