@@ -2,9 +2,10 @@
 import pandas as pd
 geo = pd.io.stata.read_stata('geo_cepii.dta')
 dist = pd.io.stata.read_stata('dist_cepii.dta')
-blocks = pd.read_csv('GeoLite2-Country-CSV_20160802/GeoLite2-Country-Blocks-IPv4.csv')
+blocks_ipv4 = pd.read_csv('GeoLite2-Country-CSV_20160802/GeoLite2-Country-Blocks-IPv4.csv')
+blocks_ipv6 = pd.read_csv('GeoLite2-Country-CSV_20160802/GeoLite2-Country-Blocks-IPv4.csv')
 loc = pd.read_csv('GeoLite2-Country-CSV_20160802/GeoLite2-Country-Locations-en.csv')
-
+blocks = pd.concat([blocks_ipv4,blocks_ipv6])
 # http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.set_index.html
 blocks.set_index('geoname_id')
 loc.set_index('geoname_id')
