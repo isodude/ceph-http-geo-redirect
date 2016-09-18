@@ -71,7 +71,7 @@ backend_selection = (
 networks = networks.merge(backend_selection).loc[:,['network','backend']]
 
 # Just print it out in a nice format for HAProxy to read.
-f = open('geoip.lst', 'w')
+f = open('geoip.lst', 'w', 1024000)
 for index, rows in networks.iterrows():
   f.write('{} {:2}\n'.format(rows['network'], rows['backend']))
 f.close()
