@@ -6,5 +6,6 @@ services:
     volumes:
       - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
       - ./geoip.lst:/usr/local/etc/haproxy/geoip.lst:ro
+      - ./check-timestamp.sh:/usr/local/etc/haproxy/check-timestamp.sh:ro
     ports:
       80:80

@@ -6,6 +6,7 @@
 function generate {
  echo "global
   maxconn 4096
+  external-check
 defaults
   balance roundrobin
   log global
@@ -13,6 +14,9 @@ defaults
   timeout connect 5000
   timeout client 50000
   timeout server 50000
+  option external-check
+  external-check command check-timestamp.sh
+  external-check path /usr/local/etc/haproxy
 
 frontend port_80
   bind *:80
