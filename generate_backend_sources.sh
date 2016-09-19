@@ -9,6 +9,7 @@ SOURCES=('eu=eu.ceph.com'
 'au=au.ceph.com'
 'hk=hk.ceph.com'
 'fr=fr.ceph.com'
+'uk=uk.ceph.com'
 'us=us-east.ceph.com')
 
 function dig_cname {
