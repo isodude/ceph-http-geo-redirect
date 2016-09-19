@@ -25,11 +25,11 @@ frontend port_80
 "
  for country in ${countries[@]}
  do
-  echo " acl ${country%%-*} req.fhdr(backend) -m str ${country%%-*}"
+  echo " acl ${country%%=*} req.fhdr(backend) -m str ${country%%=*}"
  done
  for country in ${countries[@]}
  do
-  echo " use_backend ${country%%-*} if ${country%%-*}"
+  echo " use_backend ${country%%=*} if ${country%%=*}"
  done
 
  echo " default_backend default
@@ -44,16 +44,16 @@ frontend port_80
 
  for country in ${countries[@]}
  do
-  echo "backend ${country%%-*}"
   echo " server download 127.0.1.1:80 redir http://download.ceph.com/ weight 1"
+  echo "backend ${country%%=*}"
   for country_other in ${countries[@]}
   do
     weight=2
-    if [ ${country_other%%-*} == ${country%%-*} ]
+    if [ ${country_other%%=*} == ${country%%=*} ]
     then
       weight=256
     fi
-    echo " server ${country_other%%-*} ${country_other##*-}:80 redir http://${country_other##*-}.ceph.com weight ${weight}"
+    echo " server ${country_other%%=*} ${country_other##*=}:80 redir http://${country_other%%=*}.ceph.com check weight ${weight}"
   done
  done
 }
