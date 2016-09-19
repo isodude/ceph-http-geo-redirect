@@ -32,7 +32,7 @@ frontend port_80
   echo " use_backend ${country%%-*} if ${country%%-*}"
  done
 
- echo " default_backend download
+ echo " default_backend default
 
 ##
 # Backends
