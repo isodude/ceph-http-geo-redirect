@@ -44,8 +44,8 @@ frontend port_80
 
  for country in ${countries[@]}
  do
-  echo " server download 127.0.1.1:80 redir http://download.ceph.com/ weight 1"
   echo "backend ${country%%=*}"
+  echo " server download 173.236.253.173:80 redir http://download.ceph.com/ weight 1"
   for country_other in ${countries[@]}
   do
     weight=2
@@ -58,8 +58,5 @@ frontend port_80
  done
 }
 
-declare -a countries=(
-'se-127.0.1.1'
-'eu-127.0.1.1'
-'de-127.0.1.1')
+declare -a countries=($(./generate_backend_sources.sh))
 generate > haproxy.cfg
