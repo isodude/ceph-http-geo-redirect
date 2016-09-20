@@ -62,7 +62,7 @@ three_hours_ago=`/bin/date +%s -d "24 hours ago"`
 
 # Fetch a timestamp and cache it for a certain amount of time.
 function get_timestamp {
-  file=timestamp-$1
+  file=/usr/local/etc/haproxy/timestamp-$1
   # Duration to cache the result, in seconds
   url=$3
   
