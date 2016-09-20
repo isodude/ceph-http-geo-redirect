@@ -1,19 +1,40 @@
 #!/usr/bin/env python
 import pandas as pd
+import argparse
 
+parser = argparse.ArgumentParser()
+parser.add_argument("-g", "--geo-cepii",
+                        help="a geo-cepii file in DTA format",
+                        default="geo_cepii.dta")
+parser.add_argument("-d", "--dist-cepii",
+                        help="a dist-cepii file in DTA format",
+                        default="dist_cepii.dta")
+parser.add_argument("-b", "--geoip-block-ipv4",
+                        help="GeoIP IPv4 Blocks in CSV format",
+                        default="GeoLite2-Country-Blocks-IPv4.csv")
+parser.add_argument("-c", "--geoip-block-ipv6",
+                        help="GeoIP IPv6 Blocks in CSV format",
+                        default="GeoLite2-Country-Blocks-IPv6.csv")
+parser.add_argument("-l", "--geoip-locations",
+                        help="GeoIP Location names in CSV format",
+                        default="GeoLite2-Country-Locations-en.csv")
+parser.add_argument("-o", "--output",
+                        help="file to write output to",
+                        default="geoip.lst")
+args = parser.parse_args()
 # Reading in all the files
 # TODO: Add these as arguments instead
 # Collected from cepii.fr, hidden behind login, but free.
-geo = pd.io.stata.read_stata('geo_cepii.dta')
-dist = pd.io.stata.read_stata('dist_cepii.dta')
+geo = pd.io.stata.read_stata(args.geo_cepii)
+dist = pd.io.stata.read_stata(args.dist_cepii)
 # Collected from Maxmind
 # This product includes GeoLite2 data created by MaxMind, available from
 # <a href="http://www.maxmind.com">http://www.maxmind.com</a>.
 # http://geolite.maxmind.com/download/geoip/database/GeoLite2-Country-CSV.zip
-blocks_ipv4 = pd.read_csv('GeoLite2-Country-CSV_20160802/GeoLite2-Country-Blocks-IPv4.csv')
-blocks_ipv6 = pd.read_csv('GeoLite2-Country-CSV_20160802/GeoLite2-Country-Blocks-IPv4.csv')
+blocks_ipv4 = pd.read_csv(args.geoip_block_ipv4)
+blocks_ipv6 = pd.read_csv(args.geoip_block_ipv6)
 blocks = pd.concat([blocks_ipv4,blocks_ipv6])
-loc = pd.read_csv('GeoLite2-Country-CSV_20160802/GeoLite2-Country-Locations-en.csv')
+loc = pd.read_csv(args.geoip_locations)
 
 # http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.set_index.html
 # Setting up proper indexes so it's possible to merge the data
