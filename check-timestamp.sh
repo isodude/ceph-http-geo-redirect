@@ -108,6 +108,7 @@ ip=4
 if [ ${HAPROXY_SERVER_NAME: -1} == "6" ]
 then
   ip=6
+  server_address="[$server_address]"
 fi
 ts=$(get_timestamp $HAPROXY_SERVER_NAME 60 ${HAPROXY_SERVER_NAME%%6*}.ceph.com http://$server_address:$server_port/timestamp $ip)
 ret=$?
