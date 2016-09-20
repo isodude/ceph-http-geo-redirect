@@ -33,8 +33,14 @@ frontend port_1389
   bind *:1389
   default_backend stats_auth
 
-backend stats_auth
-    stats enable
+listen stats
+  bind :1936
+  mode http
+  stats enable
+  stats hide-version
+  stats uri /
+  stats realm Haproxy\ Statistics
+  stats auth stats:ceph-mirrors-rocks
 
 frontend port_80
   bind *:80
