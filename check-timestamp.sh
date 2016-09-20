@@ -86,7 +86,7 @@ function get_timestamp {
 
   if [ $ret -eq 0 ]
   then
-    cat $file
+    /bin/cat $file
     return 0
   fi
 
