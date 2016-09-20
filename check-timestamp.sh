@@ -96,7 +96,7 @@ function get_timestamp {
 set +e
 
 # Fetch the global timestamp
-g_ts=$(get_timestamp global $((3600*60)) http://download.ceph.com/timestamp)
+g_ts=$(get_timestamp global $((3600*60)) download.ceph.com http://$server_address:$server_port/timestamp 4)
 ret=$?
 if [ $ret -lt 0 ]
 then
@@ -104,7 +104,12 @@ then
 fi
 
 # Fetch the backends timestamp
-ts=$(get_timestamp $HAPROXY_SERVER_NAME 10 http://$HAPROXY_SERVER_NAME.ceph.com/timestamp)
+ip=4
+if [ ${HAPROXY_SERVER_NAME: -1} == "6" ]
+then
+  ip=6
+fi
+ts=$(get_timestamp $HAPROXY_SERVER_NAME 60 ${HAPROXY_SERVER_NAME%%6*}.ceph.com http://$server_address:$server_port/timestamp $ip)
 ret=$?
 if [ $ret -lt 0 ]
 then
