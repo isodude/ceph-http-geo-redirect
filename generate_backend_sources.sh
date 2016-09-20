@@ -1,15 +1,5 @@
 #!/bin/bash
 
-# Fetched from https://raw.githubusercontent.com/ceph/ceph/master/mirroring/mirror-ceph.sh
-declare -a SOURCES
-SOURCES=('de=de.ceph.com'
-'se=se.ceph.com'
-'cz=cz.ceph.com'
-'au=au.ceph.com'
-'hk=hk.ceph.com'
-'fr=fr.ceph.com'
-'uk=uk.ceph.com'
-'us=us-east.ceph.com')
 
 function dig_cname {
   cname=$(dig CNAME +short $1)
@@ -20,10 +10,17 @@ function dig_cname {
   dig +short $1
 }
 
-for source in ${SOURCES[@]}
+# Fetched from https://raw.githubusercontent.com/ceph/ceph/master/mirroring/MIRRORS
+mirrors=($(curl -s https://raw.githubusercontent.com/ceph/ceph/master/mirroring/MIRRORS | cut -d ':' -f 1))
+for mirror in ${mirrors[@]}
 do
-  dns=$(dig A +short ${source##*=} | tail -n1)
-  dns6=$(dig AAAA +short ${source##*=} | tail -n1)
-  echo "${source%%=*}=$dns=$dns6"
+  country=${mirror%%\.*}
+  case $country in
+    download) continue;;
+    us-east) country=us;;
+  esac
+  dns=$(dig A +short $mirror | tail -n1)
+  dns6=$(dig AAAA +short $mirror | tail -n1)
+  echo "$country=$dns=$dns6"
 done
 
