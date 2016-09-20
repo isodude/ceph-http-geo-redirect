@@ -18,6 +18,7 @@ do
   case $country in
     download) continue;;
     us-east) country=us;;
+    eu) continue;;
   esac
   dns=$(dig A +short $mirror | tail -n1)
   dns6=$(dig AAAA +short $mirror | tail -n1)
