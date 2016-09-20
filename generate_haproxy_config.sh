@@ -81,6 +81,8 @@ backend default
  for country in ${countries[@]}
  do
   echo "backend $(dn $country up)"
+  echo "  balance static-rr"
+  echo "  balance hdr(backend)"
   echo "  server download 173.236.253.173:80 redir http://download.ceph.com weight 1"
   echo "  server download6 2607:f298:6050:51f3:f816:3eff:fe71:9135:80 redir http://download.ceph.com weight 1"
   for _country in ${countries[@]}
