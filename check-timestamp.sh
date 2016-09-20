@@ -1,5 +1,5 @@
-set -euo pipefail
 #!/bin/bash
+set -euo pipefail
 
 #The arguments passed to the to the command are:
 #
