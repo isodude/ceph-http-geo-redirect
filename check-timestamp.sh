@@ -54,8 +54,11 @@ server_address=$3
 server_port=$4
 
 # Time variables for comparison
-now=`date +%s`
-three_hours_ago=`date -v-3H +%s` 
+now=`/bin/date +%s`
+# GNU
+three_hours_ago=`/bin/date +%s -d "24 hours ago"` 
+# BSD
+#three_hours_ago=`/bin/date -v-24H +%s` 
 
 # Fetch a timestamp and cache it for a certain amount of time.
 function get_timestamp {
@@ -65,16 +68,16 @@ function get_timestamp {
   
   if [ -f $file ] 
   then
-    modified=$(stat -L -f %m $file)
+    modified=$(/usr/bin/stat -L --format %Y $file)
     if [ $((now-modified)) -lt $2 ]
     then
-      cat $file
+      /bin/cat $file
       return 0
     fi
   fi 
   
   set +e
-  /usr/bin/curl -s -o $file $3
+  cmd="/usr/bin/curl -$5 -s -o $file -H host:$3 $4"
   ret=$?
   set -e
 
