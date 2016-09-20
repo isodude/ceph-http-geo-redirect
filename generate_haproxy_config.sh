@@ -40,7 +40,14 @@ listen stats
 
 frontend port_80
   bind *:80
-  
+  "
+grep -q USE_X_FORWARDED_FOR .env
+ret=$?
+if [ $ret -eq 0 ]
+then
+  echo "  http-request set-src hdr(x-forwarded-for)"
+fi
+echo "
   http-request set-header backend %[src,map_ip(/usr/local/etc/haproxy/geoip.lst)]
 "
  for country in ${countries[@]}
