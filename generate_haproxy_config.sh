@@ -4,7 +4,7 @@
 # configuration from a list of backends
 
 function dn {
-  echo $1 | cut -d '=' -f 1
+  echo $1 | cut -d '=' -f 1 | /bin/tr '[:lower:]' '[:upper:]'
 }
 
 function ipv4 {
