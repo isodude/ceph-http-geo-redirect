@@ -61,19 +61,19 @@ echo "
 "
  for country in ${countries[@]}
  do
-  echo " acl $(dn $country up) req.fhdr(backend) -m str $(dn $country up)"
+  echo "  acl $(dn $country up) req.fhdr(backend) -m str $(dn $country up)"
  done
  for country in ${countries[@]}
  do
-  echo " use_backend $(dn $country up) if $(dn $country up)"
+  echo "  use_backend $(dn $country up) if $(dn $country up)"
  done
 
- echo " default_backend default
+ echo "  default_backend default
 
 ##
 # Backends
 ##
- backend default
+backend default
   server download 127.0.1.1:80 redir http://download.ceph.com weight 1
 
 "
@@ -81,8 +81,8 @@ echo "
  for country in ${countries[@]}
  do
   echo "backend $(dn $country up)"
-  echo " server download 173.236.253.173:80 redir http://download.ceph.com weight 1"
-  echo " server download6 2607:f298:6050:51f3:f816:3eff:fe71:9135:80 redir http://download.ceph.com weight 1"
+  echo "  server download 173.236.253.173:80 redir http://download.ceph.com weight 1"
+  echo "  server download6 2607:f298:6050:51f3:f816:3eff:fe71:9135:80 redir http://download.ceph.com weight 1"
   for _country in ${countries[@]}
   do
     weight=2
@@ -90,8 +90,8 @@ echo "
     then
       weight=256
     fi
-    echo " server $(dn $_country) $(ipv4 $_country):80 redir http://$(dn $_country).ceph.com check weight ${weight}"
-    echo " server $(dn $_country)6 $(ipv6 $_country):80 redir http://$(dn $_country).ceph.com check weight ${weight}"
+    echo "  server $(dn $_country) $(ipv4 $_country):80 redir http://$(dn $_country).ceph.com check weight ${weight}"
+    echo "  server $(dn $_country)6 $(ipv6 $_country):80 redir http://$(dn $_country).ceph.com check weight ${weight}"
   done
  done
 }
