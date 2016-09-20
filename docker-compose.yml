@@ -2,7 +2,7 @@ version: '2'
 
 services:
   haproxy:
-    image: haproxy
+    build: ./
     volumes:
       - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
       - ./geoip.lst:/usr/local/etc/haproxy/geoip.lst:ro
