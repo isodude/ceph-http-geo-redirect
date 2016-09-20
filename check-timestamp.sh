@@ -78,7 +78,10 @@ function get_timestamp {
   
   set +e
   cmd="/usr/bin/curl -$5 -s -o $file -H host:$3 $4"
+  echo -e "$now: running cmd $cmd\n" >> /tmp/log
+  $cmd
   ret=$?
+  echo -e "$now: ran cmd $cmd with ret $ret\n" >> /tmp/log
   set -e
 
   if [ $ret -eq 0 ]
