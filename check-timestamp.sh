@@ -143,7 +143,7 @@ fi
 
 # Timestamp is less than global timestamp..
 # Out of sync!
-if [ $ts -lt $g_ts ] || [ $ts -lt $three_hours_ago ] 
+if [ $ts -lt $three_hours_ago ] 
 then
   exit 1
 fi
