@@ -3,6 +3,18 @@
 # This file is a really quick-and-dirty way of generating haproxy
 # configuration from a list of backends
 
+function dn {
+  echo $1 | cut -d '=' -f 1
+}
+
+function ipv4 {
+  echo $1 | cut -d '=' -f 2
+}
+
+function ipv6 {
+  echo $1 | cut -d '=' -f 3
+}
+
 function generate {
  echo "global
   maxconn 4096
@@ -31,11 +43,11 @@ frontend port_80
 "
  for country in ${countries[@]}
  do
-  echo " acl ${country%%=*} req.fhdr(backend) -m str ${country%%=*}"
+  echo " acl $(dn $country) req.fhdr(backend) -m str $(dn $country)"
  done
  for country in ${countries[@]}
  do
-  echo " use_backend ${country%%=*} if ${country%%=*}"
+  echo " use_backend $(dn $country) if $(dn $country)"
  done
 
  echo " default_backend default
@@ -50,16 +62,18 @@ frontend port_80
 
  for country in ${countries[@]}
  do
-  echo "backend ${country%%=*}"
+  echo "backend $(dn $country)"
   echo " server download 173.236.253.173:80 redir http://download.ceph.com/ weight 1"
-  for country_other in ${countries[@]}
+  echo " server download6 2607:f298:6050:51f3:f816:3eff:fe71:9135:80 redir http://download.ceph.com/ weight 1"
+  for _country in ${countries[@]}
   do
     weight=2
-    if [ ${country_other%%=*} == ${country%%=*} ]
+    if [ $(dn $_country) == $(dn $country) ]
     then
       weight=256
     fi
-    echo " server ${country_other%%=*} ${country_other##*=}:80 redir http://${country_other%%=*}.ceph.com check weight ${weight}"
+    echo " server $(dn $_country) $(ipv4 $_country):80 redir http://$(dn $_country).ceph.com check weight ${weight}"
+    echo " server $(dn $_country)6 $(ipv6 $_country):80 redir http://$(dn $_country).ceph.com check weight ${weight}"
   done
  done
 }

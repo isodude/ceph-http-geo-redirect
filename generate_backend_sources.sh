@@ -23,6 +23,7 @@ function dig_cname {
 for source in ${SOURCES[@]}
 do
   dns=$(dig A +short ${source##*=} | tail -n1)
-  echo "${source%%=*}=$dns"
+  dns6=$(dig AAAA +short ${source##*=} | tail -n1)
+  echo "${source%%=*}=$dns=$dns6"
 done
 
