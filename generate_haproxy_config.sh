@@ -58,15 +58,15 @@ frontend port_80
 # Backends
 ##
  backend default
-  server download 127.0.1.1:80 redir http://download.ceph.com/ weight 1
+  server download 127.0.1.1:80 redir http://download.ceph.com weight 1
 
 "
 
  for country in ${countries[@]}
  do
   echo "backend $(dn $country)"
-  echo " server download 173.236.253.173:80 redir http://download.ceph.com/ weight 1"
-  echo " server download6 2607:f298:6050:51f3:f816:3eff:fe71:9135:80 redir http://download.ceph.com/ weight 1"
+  echo " server download 173.236.253.173:80 redir http://download.ceph.com weight 1"
+  echo " server download6 2607:f298:6050:51f3:f816:3eff:fe71:9135:80 redir http://download.ceph.com weight 1"
   for _country in ${countries[@]}
   do
     weight=2
