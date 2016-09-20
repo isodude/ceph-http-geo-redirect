@@ -15,8 +15,7 @@ defaults
   timeout client 50000
   timeout server 50000
   option external-check
-  external-check command check-timestamp.sh
-  external-check path /usr/local/etc/haproxy
+  external-check command /usr/local/etc/haproxy/check-timestamp.sh
 
 frontend port_1389
   bind *:1389
