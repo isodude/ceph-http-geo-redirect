@@ -91,7 +91,4 @@ backend_selection = backend_selection.merge(geo)
 networks = networks.merge(backend_selection).loc[:,['network','backend']].drop_duplicates()
 
 # Just print it out in a nice format for HAProxy to read.
-f = open('geoip.lst', 'w')
-for index, rows in networks.iterrows():
-  f.write('{} {:2}\n'.format(rows['network'], rows['backend']))
-f.close()
+networks.to_csv(args.output, sep=' ', header=False, chunksize=1024000, index=False)
