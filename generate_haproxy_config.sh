@@ -18,6 +18,13 @@ defaults
   external-check command check-timestamp.sh
   external-check path /usr/local/etc/haproxy
 
+frontend port_1389
+  bind *:1389
+  default_backend stats_auth
+
+backend stats_auth
+    stats enable
+
 frontend port_80
   bind *:80
   

@@ -9,3 +9,4 @@ services:
       - ./check-timestamp.sh:/usr/local/etc/haproxy/check-timestamp.sh:ro
     ports:
       - 80:80
+      - 1389:1389 
