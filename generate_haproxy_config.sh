@@ -4,7 +4,16 @@
 # configuration from a list of backends
 
 function dn {
-  echo $1 | cut -d '=' -f 1 | /usr/bin/tr '[:lower:]' '[:upper:]'
+
+  from='[:upper:]'
+  to='[:lower:]'
+  if [ ${#@} -eq 2 ] && [ "$2" == 'up' ]
+  then
+    from='[:lower:]'
+    to='[:upper:]'
+  fi
+
+  echo $1 | cut -d '=' -f 1 | /usr/bin/tr "$from" "$to"
 }
 
 function ipv4 {
@@ -52,11 +61,11 @@ echo "
 "
  for country in ${countries[@]}
  do
-  echo " acl $(dn $country) req.fhdr(backend) -m str $(dn $country)"
+  echo " acl $(dn $country up) req.fhdr(backend) -m str $(dn $country up)"
  done
  for country in ${countries[@]}
  do
-  echo " use_backend $(dn $country) if $(dn $country)"
+  echo " use_backend $(dn $country up) if $(dn $country up)"
  done
 
  echo " default_backend default
@@ -71,7 +80,7 @@ echo "
 
  for country in ${countries[@]}
  do
-  echo "backend $(dn $country)"
+  echo "backend $(dn $country up)"
   echo " server download 173.236.253.173:80 redir http://download.ceph.com weight 1"
   echo " server download6 2607:f298:6050:51f3:f816:3eff:fe71:9135:80 redir http://download.ceph.com weight 1"
   for _country in ${countries[@]}
