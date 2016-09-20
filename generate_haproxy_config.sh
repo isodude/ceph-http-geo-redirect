@@ -29,10 +29,6 @@ defaults
   option external-check
   external-check command /usr/local/etc/haproxy/check-timestamp.sh
 
-frontend port_1389
-  bind *:1389
-  default_backend stats_auth
-
 listen stats
   bind :1936
   mode http
