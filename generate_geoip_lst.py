@@ -48,10 +48,11 @@ dist.set_index(['iso_o','iso_d'])
 # We fix this by using continent_code and then fillna solves it for us!
 # This helps alot http://pandas.pydata.org/pandas-docs/stable/merging.html
 # http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.rename.html
+loc = loc.loc[:,['geoname_id','continent_code','country_iso_code']].rename(columns={'country_iso_code':'iso2'})
+geo = geo.loc[:,['iso2','iso3']]
+blocks = blocks.loc[:,['network','geoname_id']]
 networks = (
-             blocks.merge(loc).loc[:,['network','continent_code','country_iso_code']]
-             .rename(columns={'country_iso_code':'iso2'})
-             .merge(geo.loc[:,['iso2','iso3']])
+             blocks.merge(loc).merge(geo).drop_duplicates()
            )
 networks.iso2 = networks.iso2.fillna(value=networks.continent_code)
 networks.drop('continent_code',axis=1, inplace=True)
@@ -83,14 +84,11 @@ backend_selection = (
 backend_selection.set_index(['iso3'])
 
 # Merging with geo-data to get the iso2 names
-backend_selection = ( 
-                       backend_selection.merge(geo.loc[:,['iso2','iso3']]
-                       .rename(columns={'iso2':'backend','iso3':'backend_iso3'})) 
-                       .replace('GB','UK')
-                    )
+geo = geo.loc[:,['iso2','iso3']].rename(columns={'iso3':'backend_iso3','iso2':'backend'}).replace('GB','UK')
+backend_selection = backend_selection.merge(geo)
 
 # Join in backend_selection with networks to complete our set
-networks = networks.merge(backend_selection).loc[:,['network','backend']]
+networks = networks.merge(backend_selection).loc[:,['network','backend']].drop_duplicates()
 
 # Just print it out in a nice format for HAProxy to read.
 f = open('geoip.lst', 'w')
