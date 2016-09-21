@@ -89,12 +89,14 @@ backend default
   for _country in ${countries[@]}
   do
     weight=2
+    inter='120s'
     if [ $(dn $_country) == $(dn $country) ]
     then
       weight=256
+      inter='10s'
     fi
-    echo "  server $(dn $_country) $(ipv4 $_country):80 redir http://$(dn $_country).ceph.com check weight ${weight}"
-    echo "  server $(dn $_country)6 $(ipv6 $_country):80 redir http://$(dn $_country).ceph.com check weight ${weight}"
+    echo "  server $(dn $_country) $(ipv4 $_country):80 redir http://$(dn $_country).ceph.com check weight ${weight} inter ${inter}"
+    echo "  server $(dn $_country)6 $(ipv6 $_country):80 redir http://$(dn $_country).ceph.com check weight ${weight} inter ${inter}"
   done
  done
 }
