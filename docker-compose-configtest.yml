@@ -2,10 +2,9 @@ version: '2'
 
 services:
   haproxy-configtest:
-    image: haproxy
-    volumes:
-      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
-      - ./geoip.lst:/usr/local/etc/haproxy/geoip.lst:ro
+    extends:
+      file: docker-compose.yml
+      service: haproxy
     network_mode: "none"
     entrypoint: haproxy
     command: -f /usr/local/etc/haproxy/haproxy.cfg -c
