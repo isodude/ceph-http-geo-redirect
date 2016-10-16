@@ -58,7 +58,7 @@ networks.iso2 = networks.iso2.fillna(value=networks.continent_code)
 networks.drop('continent_code',axis=1, inplace=True)
 
 # Our own mirrors, converted to iso3 format.
-mirrors = [x.upper() for x in ("de","se","cz","au","hk","fr","us","gb")]
+mirrors = [x.upper() for x in ("de","se","cz","au","hk","fr","us","gb","nl")]
 # http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.drop_duplicates.html
 mirrors_iso3 = (
                  geo.query('iso2 == @mirrors')
@@ -70,8 +70,11 @@ mirrors_iso3 = (
 # We retrieve the indexes for those rows and use them later
 indexes = [] 
 for origin in dist.iso_o.unique():
+ backend = mirrors_iso3
+ if origin in mirrors_iso3:
+   backend = origin
  indexes.append((
-                  dist.query('(iso_o == @origin) and (iso_d == @mirrors_iso3)')
+                  dist.query('(iso_o == @origin) and (iso_d == @backend)')
                   .sort_values(by='dist')
                   .index[0]
                 ))
@@ -84,8 +87,9 @@ backend_selection = (
 backend_selection.set_index(['iso3'])
 
 # Merging with geo-data to get the iso2 names
-geo = geo.loc[:,['iso2','iso3']].rename(columns={'iso3':'backend_iso3','iso2':'backend'}).replace('GB','UK')
-backend_selection = backend_selection.merge(geo)
+geo = geo.loc[:,['iso2','iso3']].rename(columns={'iso3':'backend_iso3','iso2':'backend'}).replace({'GB':'UK','NL':'EU'})
+backend_selection = backend_selection.merge(geo).drop_duplicates()
+print backend_selection.to_string()
 
 # Join in backend_selection with networks to complete our set
 networks = networks.merge(backend_selection).loc[:,['network','backend']].drop_duplicates()
