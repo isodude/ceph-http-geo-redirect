@@ -1,7 +1,9 @@
 # The distrubution of countries and backends
 
 ## Country and their respective backend
-|iso3|backend_iso3|backend|
+
+| iso3 | backend_iso3 | backend |
+| ---- | ------------ | ------- |
 |ABW|USA|US|
 |AIA|USA|US|
 |ANT|USA|US|
@@ -226,9 +228,10 @@
 |GBR|GBR|UK|
 |IRL|GBR|UK|
 |ISL|GBR|UK|
+
 # IPv6 by backend
 |Count|Country|
-|=======|==|
+| ------- | ------ |
 |37200|AU|
 |70292|CZ|
 |1139362|DE|
@@ -238,9 +241,10 @@
 |78030|SE|
 |23276|UK|
 |1187408|US|
+
 ## IPv4s by backend
 |Count|Country|
-|=====|==|
+| ----- | ------- |
 |7594|AU|
 |26204|CZ|
 |10852|DE|
