@@ -59,11 +59,13 @@ then
 fi
 echo "
   http-request set-header backend %[${src},map_ip($PWD/geoip.lst)]
+  acl letsencrypt-acl path_beg /.well-known/acme-challenge/
 "
  for country in ${countries[@]}
  do
   echo "  acl $(dn $country up) req.fhdr(backend) -m str $(dn $country up)"
  done
+ echo "  use_backend letsencrypt-backend if letsencrypt-acl"
  for country in ${countries[@]}
  do
   echo "  use_backend $(dn $country up) if $(dn $country up)"
@@ -74,6 +76,8 @@ echo "
 ##
 # Backends
 ##
+backend letsencrypt-backend
+  server letsencrypt 127.0.0.1:54321
 backend default
   server download 127.0.1.1:80 redir http://download.ceph.com weight 1
 
