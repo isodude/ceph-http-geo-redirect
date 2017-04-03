@@ -36,7 +36,7 @@ defaults
   timeout client 50000
   timeout server 50000
   option external-check
-  external-check command /usr/local/etc/haproxy/check-timestamp.sh
+  external-check command $PWD/check-timestamp.sh
 
 listen stats
   bind :1936
@@ -58,7 +58,7 @@ then
   src="hdr(x-forwarded-for)"
 fi
 echo "
-  http-request set-header backend %[${src},map_ip(/usr/local/etc/haproxy/geoip.lst)]
+  http-request set-header backend %[${src},map_ip($PWD/geoip.lst)]
 "
  for country in ${countries[@]}
  do
